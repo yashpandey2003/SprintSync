@@ -1,9 +1,12 @@
 package com.yash.project_management.controller;
 
 import com.yash.project_management.model.Chat;
+import com.yash.project_management.model.Invitation;
 import com.yash.project_management.model.Project;
 import com.yash.project_management.model.User;
 import com.yash.project_management.reponse.MessageResponse;
+import com.yash.project_management.request.InvitationRequest;
+import com.yash.project_management.service.InvitationService;
 import com.yash.project_management.service.ProjectService;
 import com.yash.project_management.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InvitationService invitationService;
 
     @GetMapping
     public ResponseEntity<List<Project>> getProject(@RequestParam(required = false) String category, @RequestParam(required = false) String tag, @RequestHeader("Authorization") String jwt) throws Exception {
@@ -60,6 +66,21 @@ public class ProjectController {
         Chat chat = projectService.getChatByProjectId(projectId);
         return new ResponseEntity<>(chat, HttpStatus.OK);
     }
+    @PostMapping("/invite")
+    public ResponseEntity<MessageResponse> inviteProject(@RequestHeader("Authorization") String jwt, @RequestBody InvitationRequest request) throws Exception{
+        invitationService.sendInvitation(request.getEmail(), request.getProjectId());
+        MessageResponse res = new MessageResponse(("User invitation sent"));
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+    @GetMapping("/accept_invitation")
+    public ResponseEntity<Invitation> acceptInvite(@RequestHeader("Authorization") String jwt, @RequestParam String token) throws Exception{
+        User user = userService.findUserProfileByJwt(jwt);
+        Invitation invitation = invitationService.acceptInvitation(token, user.getId());
+        projectService.addUserToProject(invitation.getProjectId(), user.getId());
+        return new ResponseEntity<>(invitation, HttpStatus.ACCEPTED);
+    }
+
+
 
 
 
