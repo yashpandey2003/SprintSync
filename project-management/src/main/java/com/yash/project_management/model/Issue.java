@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class Issue {
     private String title;
     private String description;
     private String status;
-    private String projectID;
+    private Long projectID;
     private String priority;
-    private String dueDate;
+    private LocalDate dueDate;
     private List<String> tags = new ArrayList<>();
 
     @ManyToOne
