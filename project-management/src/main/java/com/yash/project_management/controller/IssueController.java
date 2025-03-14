@@ -3,6 +3,8 @@ package com.yash.project_management.controller;
 import com.yash.project_management.DTO.IssueDTO;
 import com.yash.project_management.model.Issue;
 import com.yash.project_management.model.User;
+import com.yash.project_management.reponse.AuthResponse;
+import com.yash.project_management.reponse.MessageResponse;
 import com.yash.project_management.request.IssueRequest;
 import com.yash.project_management.service.IssueService;
 import com.yash.project_management.service.UserService;
@@ -49,5 +51,24 @@ public class IssueController {
         issueDTO.setTags(createdIssue.getTags());
         issueDTO.setAssignee(createdIssue.getAssignee());
         return ResponseEntity.ok(issueDTO);
+    }
+    @DeleteMapping("/{issueId}")
+    public ResponseEntity<MessageResponse> deleteIssue(@PathVariable Long issueId, @RequestHeader("Authorization") String token) throws Exception{
+        User user = userService.findUserProfileByJwt(token);
+        issueService.deleteIssue(issueId, user.getId());
+        MessageResponse res = new MessageResponse();
+        res.setMessage("Issue deleted");
+        return ResponseEntity.ok(res);
+    }
+    @PutMapping("/{issueId}/assignee/{userId}")
+    public ResponseEntity<Issue> addUserToIssue(@PathVariable Long issueId, @PathVariable Long userId) throws Exception{
+        Issue issue = issueService.addUserToIssue(issueId, userId);
+        return ResponseEntity.ok(issue);
+    }
+
+    @PutMapping("/{issueId}/status/{status}")
+    public ResponseEntity<Issue> updateIssueStatus(@PathVariable String status, @PathVariable Long issueId) throws Exception{
+        Issue issue = issueService.updateStatus(issueId, status);
+        return ResponseEntity.ok(issue);
     }
 }
