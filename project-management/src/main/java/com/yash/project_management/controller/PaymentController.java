@@ -27,7 +27,7 @@ public class PaymentController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/{plantType}")
+    @PostMapping("/{planType}")
     public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable PlanType planType, @RequestHeader("Authorization") String jwt) throws Exception{
         User user = userService.findUserProfileByJwt(jwt);
         int amount = 799*100;
@@ -46,10 +46,10 @@ public class PaymentController {
             paymentLinkRequest.put("customer", customer);
             JSONObject notify = new JSONObject();
             notify.put("email", true);
-            paymentLinkRequest.put("callback_url", "http://localhost:5173/upgrade_plan/success?planType");
+            paymentLinkRequest.put("callback_url", "http://localhost:5173/upgrade_plan/success?planType="+planType);
             PaymentLink payment = razorpay.paymentLink.create(paymentLinkRequest);
             String paymentLinkId = payment.get("id");
-            String paymentLinkUrl = payment.get("short_url");
+            String paymentLinkUrl = payment.get("id");
             PaymentLinkResponse res = new PaymentLinkResponse();
             res.setPayment_link_id(paymentLinkUrl);
             res.setPayment_link_id(paymentLinkId);

@@ -36,6 +36,7 @@ public class CommentServiceImpl implements CommentService{
         Issue issue = issueOptional.get();
         User user = userOptional.get();
         Comment comment = new Comment();
+        comment.setComment(content);
         comment.setIssue(issue);
         comment.setUser(user);
         Comment savedComment = commentRepository.save(comment);
