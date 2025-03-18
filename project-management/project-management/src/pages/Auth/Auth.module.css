@@ -1,0 +1,122 @@
+/* Container for Login/Signup */
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #25252b;
+}
+
+/* Animated Outer Box */
+.box {
+    position: relative;
+    width: 25rem;
+    height: 30rem;
+    border-radius: 20px;
+    background: #2d2d39;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Rotating Lines Around the Box */
+.box::before,
+.box::after {
+    content: "";
+    position: absolute;
+    width: calc(100% + 10px); /* Slightly larger than the box */
+    height: calc(100% + 10px); /* Slightly larger than the box */
+    background: conic-gradient(
+        transparent,
+        transparent,
+        transparent,
+        #ff2270
+    );
+    border-radius: 20px;
+    animation: rotateLines 4s linear infinite;
+    z-index: 1; /* Ensure it's above the box */
+}
+
+.box::before {
+    background: conic-gradient(
+        transparent,
+        transparent,
+        transparent,
+        #45f3ff
+    );
+    animation-delay: -2s;
+}
+
+@keyframes rotateLines {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Inner Dark Box */
+.minContainer {
+    position: absolute;
+    inset: 4px;
+    background: #2d2d39;
+    border-radius: 15px;
+    border: 5px solid #25252b;
+    z-index: 10; /* Above the rotating lines */
+}
+
+/* Login/Signup Form Container */
+.login {
+    position: absolute;
+    inset: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    box-shadow: inset 0 10px 20px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Form Styling */
+.loginBox {
+    width: 100%;
+    padding: 0 20px;
+}
+
+.loginBox input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.loginBox button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: #ff2270;
+    color: white;
+    cursor: pointer;
+}
+
+.loginBox button:hover {
+    background: #45f3ff;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #45f3ff;
+    cursor: pointer;
+    text-decoration: underline;
+}
