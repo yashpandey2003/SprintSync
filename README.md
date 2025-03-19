@@ -1,7 +1,7 @@
 # Project Management System
 
 ## Overview
-The **Project Management System** is a full-stack web application built using **Spring Boot** and **ReactJS** to facilitate project tracking, task management, and collaboration among teams. The application integrates **Razorpay** for payment processing and provides an intuitive UI with **ShadCN** for an enhanced user experience. **Redux** is used for state management in the frontend, and **MySQL** serves as the database for data persistence.
+The **Project Management System** is a full-stack web application built using **Spring Boot** and **ReactJS** to facilitate project tracking, task management, and collaboration among teams. The application integrates **Razorpay** for payment processing and provides an intuitive UI with **ShadCN** for an enhanced user experience. **Redux** is used for state management in the frontend, and **MySQL** serves as the database for data persistence. This application have rate limiter implemented to be safe from DDOS attacks using Resilience4j.
 
 ## Features
 - **User Authentication** (Sign up, Login, Logout)
