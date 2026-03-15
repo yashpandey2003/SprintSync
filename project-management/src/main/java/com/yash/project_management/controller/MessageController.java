@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 @RestController
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class MessageController {
     private final MessageService messageService;
     private final UserService userService;
     private final ProjectService projectService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @PostMapping("/send")
     public ResponseEntity<Message> sendMessage(@RequestBody CreateMessageRequest request) throws Exception {
@@ -28,6 +31,9 @@ public class MessageController {
         Chat chats = projectService.getProjectById(request.getProjectId()).getChat();
         if (chats == null) throw new Exception("Chats not found");
         Message sentMessage = messageService.sendMessage(request.getSenderId(), request.getProjectId(), request.getContent());
+        
+        messagingTemplate.convertAndSend("/project/" + request.getProjectId(), sentMessage);
+        
         return ResponseEntity.ok(sentMessage);
     }
 

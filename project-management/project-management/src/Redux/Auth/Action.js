@@ -1,6 +1,7 @@
 import axios from "axios";
 import { GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType"
 import { API_BASE_URL } from "@/config/api";
+import { toast } from "react-toastify";
 
 export const register = userData => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST })
@@ -9,8 +10,10 @@ export const register = userData => async (dispatch) => {
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt)
             dispatch({ type: REGISTER_SUCCESS, payload: data })
+            toast.success("Registration successful!");
         }
     } catch (error) {
+        toast.error(error.response?.data?.error || "Registration failed.");
         // Error handled by reducer
     }
 }
@@ -22,8 +25,10 @@ export const login = userData => async (dispatch) => {
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt)
             dispatch({ type: LOGIN_SUCCESS, payload: data })
+            toast.success("Logged in successfully!");
         }
     } catch (error) {
+        toast.error(error.response?.data?.error || "Login failed.");
         // Error handled by reducer
     }
 }

@@ -26,10 +26,13 @@ const ChatReducer = (state=initialState, action)=>{
                 messages: action.messages
             };
         case actionTypes.SEND_MESSAGE_SUCCESS:
+        case actionTypes.RECEIVE_MESSAGE:
             return {
                 ...state,
                 loading:false,
-                messages:[...state.messages, action.message]
+                messages: state.messages.some(m => m.id === action.message.id) 
+                    ? state.messages 
+                    : [...state.messages, action.message]
             };
         case actionTypes.FETCH_CHAT_BY_PROJECT_SUCCESS:
             return{

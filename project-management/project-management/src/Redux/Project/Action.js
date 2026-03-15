@@ -15,7 +15,7 @@ import {
     SEARCH_PROJECT_REQUEST, 
     SEARCH_PROJECT_SUCCESS 
 } from "./ActionType";
-
+import { toast } from "react-toastify";
 
 export const fetchProject = ({ category, tag }) => async (dispatch) => {
     dispatch({ type: FETCH_PROJECT_REQUEST });
@@ -47,8 +47,10 @@ export const createProject = (projectData) => async (dispatch) => {
         const { data } = await api.post("/api/projects", projectData);
         console.log("Created project:", data);
         dispatch({ type: CREATE_PROJECT_SUCCESS, project: data }); 
+        toast.success("Project created successfully!");
     } catch (error) {
         console.error("Error creating project:", error);
+        toast.error("Failed to create project");
     }
 };
 
@@ -71,8 +73,10 @@ export const deleteProject = (projectId) => async (dispatch) => {
         await api.delete(`/api/projects/`+projectId);
         console.log(`Deleted project with ID: ${projectId}`);
         dispatch({ type: DELETE_PROJECT_SUCCESS, projectId });
+        toast.success("Project deleted.");
     } catch (error) {
         console.error("Error deleting project:", error);
+        toast.error("Failed to delete project");
     }
 };
 
@@ -83,8 +87,10 @@ export const inviteToProject = ({ email, projectId }) => async (dispatch) => {
         const { data } = await api.post("/api/projects/invite", { email, projectId });
         console.log("Sent project invitation:", data);
         dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
+        toast.success("Invitation sent successfully!");
     } catch (error) {
         console.error("Error inviting to project:", error);
+        toast.error("Failed to send invitation.");
     }
 };
 

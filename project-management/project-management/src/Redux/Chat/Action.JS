@@ -66,4 +66,9 @@ export const fetchChatMessages = (chatId)=>{
     };
 };
 
-
+export const receiveMessage = (message) => {
+    return {
+        type: actionTypes.RECEIVE_MESSAGE,
+        message,
+    };
+};

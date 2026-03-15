@@ -5,18 +5,56 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchChatByProject, fetchChatMessages, sendMessage } from '@/Redux/Chat/Action.js'
+import { fetchChatByProject, fetchChatMessages, sendMessage, receiveMessage } from '@/Redux/Chat/Action.js'
 import { useParams } from 'react-router-dom'
+import SockJS from 'sockjs-client'
+import { Client } from '@stomp/stompjs'
+import { useRef } from 'react'
 
 const ChatBox = () => {
     const [message, setMessage] = useState("");
     const dispatch = useDispatch();
     const { auth, chat } = useSelector(store => store);
     const { id } = useParams();
+    const scrollRef = useRef(null);
+
+    // Auto-scroll to bottom when messages change
+    useEffect(() => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [chat.messages]);
 
     useEffect(() => {
         dispatch(fetchChatByProject(id))
-    }, [])
+    }, [dispatch, id])
+
+    // WebSocket Connection
+    useEffect(() => {
+        const client = new Client({
+            brokerURL: 'ws://localhost:8081/ws',
+            reconnectDelay: 5000,
+            onConnect: () => {
+                console.log('Connected to WebSocket');
+                client.subscribe(`/project/${id}`, (message) => {
+                    const receivedMessage = JSON.parse(message.body);
+                    dispatch(receiveMessage(receivedMessage));
+                });
+            },
+            onStompError: (error) => {
+                console.error("STOMP error", error);
+            }
+        });
+
+        client.activate();
+
+        return () => {
+            if (client) {
+                client.deactivate();
+                console.log('Disconnected from WebSocket');
+            }
+        };
+    }, [id, dispatch]);
 
     useEffect(() => {
         if (chat.chat?.id) {
@@ -97,6 +135,7 @@ const ChatBox = () => {
                                 <p className='text-xs'>No messages yet. Start the conversation!</p>
                             </div>
                         )}
+                        <div ref={scrollRef} />
                     </div>
                 </ScrollArea>
 

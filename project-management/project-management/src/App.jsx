@@ -14,6 +14,9 @@ import { fetchProject } from './Redux/Project/Action'
 import UpgradeSuccess from './pages/Subscription/UpgradeSuccess'
 import AcceptInvitation from './pages/Project/AcceptInvitation'
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   const dispatch = useDispatch();
   const {auth}=  useSelector(store=>store)
@@ -36,6 +39,19 @@ function App() {
       </Routes>
     </div>:<Auth />
     }
+    
+    <ToastContainer 
+      position="bottom-right"
+      autoClose={3000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="dark"
+    />
     </>
   )
 }
