@@ -1,6 +1,6 @@
 package com.yash.project_management.RateLimiterConfig;
 
-import com.yash.project_management.Exception.RateLimitExceededException;
+import com.yash.project_management.exception.RateLimitExceededException;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
 import org.aspectj.lang.annotation.Aspect;

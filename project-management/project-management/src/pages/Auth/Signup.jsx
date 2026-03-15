@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { register } from '@/Redux/Auth/Action';
-import React from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -12,20 +11,19 @@ const Signup = () => {
     defaultValues: {
       email: "",
       password: "",
-      fullname: ""
+      fullName: ""
     },
   });
 
   const onSubmit = (data) => {
     dispatch(register(data));
-    console.log("Inviting user with email:", data.email);
   };
 
   return (
     <div className='space-y-5'>
-      <h1>Register</h1>
+      <h1 className='text-2xl font-bold gradient-text text-center'>Create Account</h1>
       <Form {...form}>
-        <form className='space-y-5' onSubmit={form.handleSubmit(onSubmit)}>
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="fullName"
@@ -35,15 +33,14 @@ const Signup = () => {
                   <Input
                     {...field}
                     type="text"
-                    className="border w-full border-gray-700 py-5 px-5"
-                    placeholder="Enter your full name"
+                    className="w-full py-5 px-4"
+                    placeholder="Full name"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {/* Email Field */}
           <FormField
             control={form.control}
             name="email"
@@ -53,8 +50,8 @@ const Signup = () => {
                   <Input
                     {...field}
                     type="email"
-                    className="border w-full border-gray-700 py-5 px-5"
-                    placeholder="Enter your email address"
+                    className="w-full py-5 px-4"
+                    placeholder="Email address"
                   />
                 </FormControl>
                 <FormMessage />
@@ -70,7 +67,7 @@ const Signup = () => {
                   <Input
                     {...field}
                     type="password"
-                    className="border w-full border-gray-700 py-5 px-5"
+                    className="w-full py-5 px-4"
                     placeholder="Create a strong password"
                   />
                 </FormControl>
@@ -78,8 +75,8 @@ const Signup = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className='w-full mt-5'>
-            Register
+          <Button type="submit" className='w-full mt-5 py-5 font-semibold'>
+            Create Account
           </Button>
         </form>
       </Form>

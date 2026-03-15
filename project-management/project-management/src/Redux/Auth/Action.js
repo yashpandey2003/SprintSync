@@ -10,9 +10,8 @@ export const register = userData => async (dispatch) => {
             localStorage.setItem("jwt", data.jwt)
             dispatch({ type: REGISTER_SUCCESS, payload: data })
         }
-        console.log("register success", data)
     } catch (error) {
-        console.log(error);
+        // Error handled by reducer
     }
 }
 
@@ -24,9 +23,8 @@ export const login = userData => async (dispatch) => {
             localStorage.setItem("jwt", data.jwt)
             dispatch({ type: LOGIN_SUCCESS, payload: data })
         }
-        console.log("login success", data)
     } catch (error) {
-        console.log(error);
+        // Error handled by reducer
     }
 }
 
@@ -39,9 +37,8 @@ export const getUser = () => async (dispatch) => {
             },
         });
         dispatch({ type: GET_USER_SUCCESS, payload: data })
-        console.log("user success", data)
     } catch (error) {
-        console.log(error);
+        // Error handled by reducer
     }
 }
 
@@ -49,4 +46,3 @@ export const logout = () => async (dispatch) => {
     dispatch({ type: LOGOUT })
     localStorage.clear();
 }
-

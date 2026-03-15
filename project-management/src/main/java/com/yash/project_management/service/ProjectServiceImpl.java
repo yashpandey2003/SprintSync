@@ -4,21 +4,20 @@ import com.yash.project_management.model.Chat;
 import com.yash.project_management.model.Project;
 import com.yash.project_management.model.User;
 import com.yash.project_management.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ProjectServiceImpl implements ProjectService{
+@RequiredArgsConstructor
+public class ProjectServiceImpl implements ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ChatService chatService;
+    private final ProjectRepository projectRepository;
+    private final UserService userService;
+    private final ChatService chatService;
 
     @Override
     public Project createProject(Project project, User user) throws Exception {
@@ -41,12 +40,15 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public List<Project> getProjectByTeam(User user, String category, String tag) throws Exception {
         List<Project> projects = projectRepository.findByTeamContainingOrOwner(user, user);
-        if(category!=null){
-            projects = projects.stream().filter(project->project.getCategory().equals(category))
+        if (category != null) {
+            projects = projects.stream()
+                    .filter(project -> project.getCategory().equals(category))
                     .toList();
         }
-        if(tag!=null){
-            projects = projects.stream().filter(project->project.getTags().contains(tag)).collect(Collectors.toList());
+        if (tag != null) {
+            projects = projects.stream()
+                    .filter(project -> project.getTags().contains(tag))
+                    .collect(Collectors.toList());
         }
         return projects;
     }
@@ -54,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public Project getProjectById(Long projectId) throws Exception {
         Optional<Project> optionalProject = projectRepository.findById(projectId);
-        if(optionalProject.isEmpty()){
+        if (optionalProject.isEmpty()) {
             throw new Exception("project not found");
         }
         return optionalProject.get();
@@ -63,9 +65,7 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public void deleteProject(Long projectId, Long userId) throws Exception {
         getProjectById(projectId);
-//        userService.findUserById(userId);
         projectRepository.deleteById(projectId);
-
     }
 
     @Override
@@ -81,8 +81,8 @@ public class ProjectServiceImpl implements ProjectService{
     public void addUserToProject(Long projectId, Long userId) throws Exception {
         Project project = getProjectById(projectId);
         User user = userService.findUserById(userId);
-        for(User member: project.getTeam()){
-            if(member.getId().equals(userId)){
+        for (User member : project.getTeam()) {
+            if (member.getId().equals(userId)) {
                 return;
             }
         }
@@ -95,10 +95,9 @@ public class ProjectServiceImpl implements ProjectService{
     public void removeUserFromProject(Long projectId, Long userId) throws Exception {
         Project project = getProjectById(projectId);
         User user = userService.findUserById(userId);
-        if(!project.getTeam().contains(user)){
+        if (!project.getTeam().contains(user)) {
             project.getChat().getUsers().remove(user);
             project.getTeam().remove(user);
-
         }
         projectRepository.save(project);
     }

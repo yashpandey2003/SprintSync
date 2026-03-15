@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { login } from '@/Redux/Auth/Action';
-import React from 'react'
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -17,15 +16,13 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(login(data));
-    console.log("login user with email:", data.email);
   };
 
   return (
     <div className='space-y-5'>
-      <h1>Login</h1>
+      <h1 className='text-2xl font-bold gradient-text text-center'>Welcome Back</h1>
       <Form {...form}>
-        <form className='space-y-5' onSubmit={form.handleSubmit(onSubmit)}>
-          {/* Email Field */}
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="email"
@@ -35,8 +32,8 @@ const Login = () => {
                   <Input
                     {...field}
                     type="email"
-                    className="border w-full border-gray-700 py-5 px-5"
-                    placeholder="Enter your email address"
+                    className="w-full py-5 px-4"
+                    placeholder="Email address"
                   />
                 </FormControl>
                 <FormMessage />
@@ -52,16 +49,16 @@ const Login = () => {
                   <Input
                     {...field}
                     type="password"
-                    className="border w-full border-gray-700 py-5 px-5"
-                    placeholder="Enter your password"
+                    className="w-full py-5 px-4"
+                    placeholder="Password"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" className='w-full mt-5'>
-            Login
+          <Button type="submit" className='w-full mt-5 py-5 font-semibold'>
+            Sign In
           </Button>
         </form>
       </Form>

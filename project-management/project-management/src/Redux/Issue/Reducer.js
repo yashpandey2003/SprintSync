@@ -27,12 +27,21 @@ const issueReducer = (state = initialState, action) => {
                 issues: action.issues,
             };
 
-        case actionTypes.FETCH_ISSUES_BY_ID_SUCCESS:
         case actionTypes.UPDATE_ISSUE_STATUS_SUCCESS:
             return {
                 ...state,
                 loading: false,
-                issueDetails: action.issueDetails,  // ✅ Fixed from `issues`
+                issueDetails: action.issueDetails,
+                issues: state.issues.map((issue) =>
+                    issue.id === action.issueDetails.id ? action.issueDetails : issue
+                ),
+            };
+
+        case actionTypes.FETCH_ISSUES_BY_ID_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                issueDetails: action.issueDetails,
             };
 
         case actionTypes.CREATE_ISSUE_SUCCESS:

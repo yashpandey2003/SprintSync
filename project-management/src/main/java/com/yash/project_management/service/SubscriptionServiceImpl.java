@@ -4,17 +4,18 @@ import com.yash.project_management.model.PlanType;
 import com.yash.project_management.model.Subscription;
 import com.yash.project_management.model.User;
 import com.yash.project_management.repository.SubscriptionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
-public class SubscriptionServiceImpl implements SubscriptionService{
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
+@RequiredArgsConstructor
+public class SubscriptionServiceImpl implements SubscriptionService {
+
+    private final UserService userService;
+    private final SubscriptionRepository subscriptionRepository;
+
     @Override
     public Subscription createSubscription(User user) {
         Subscription subscription = new Subscription();
@@ -29,7 +30,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public Subscription getUserSubscription(Long userId) throws Exception {
         Subscription subscription = subscriptionRepository.findByUserId(userId);
-        if(!isValid(subscription)){
+        if (!isValid(subscription)) {
             subscription.setPlanType(PlanType.FREE);
             subscription.setSubscriptionEndDate(LocalDate.now().plusMonths(12));
             subscription.setSubscriptionStartDate(LocalDate.now());
@@ -42,10 +43,9 @@ public class SubscriptionServiceImpl implements SubscriptionService{
         Subscription subscription = subscriptionRepository.findByUserId(userId);
         subscription.setPlanType(planType);
         subscription.setSubscriptionStartDate(LocalDate.now());
-        if(planType.equals(PlanType.ANNUALLY)){
+        if (planType.equals(PlanType.ANNUALLY)) {
             subscription.setSubscriptionEndDate(LocalDate.now().plusMonths(12));
-        }
-        else{
+        } else {
             subscription.setSubscriptionEndDate(LocalDate.now().plusMonths(1));
         }
         return subscriptionRepository.save(subscription);
@@ -53,7 +53,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public boolean isValid(Subscription subscription) {
-        if(subscription.getPlanType().equals(PlanType.FREE)){
+        if (subscription.getPlanType().equals(PlanType.FREE)) {
             return true;
         }
         LocalDate endDate = subscription.getSubscriptionEndDate();

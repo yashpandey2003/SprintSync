@@ -3,6 +3,7 @@ package com.yash.project_management.DTO;
 import com.yash.project_management.model.Project;
 import com.yash.project_management.model.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class IssueDTO {
     private Long id;
     private String title;

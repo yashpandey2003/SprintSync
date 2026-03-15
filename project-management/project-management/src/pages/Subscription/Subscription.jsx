@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SubscriptionCard from './SubscriptionCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSubscription } from '@/Redux/Subscription/Action';
@@ -36,48 +36,54 @@ const freePlan = [
 ];
 
 const Subscription = () => {
-  const dispatch = useDispatch();
-  const subscription = useSelector(store => store.subscription);
-  const [userSubscription, setUserSubscription] = useState(null);
+    const dispatch = useDispatch();
+    const subscription = useSelector(store => store.subscription);
+    const [userSubscription, setUserSubscription] = useState(null);
 
-  useEffect(() => {
-      dispatch(getUserSubscription());
-  }, [dispatch]);
+    useEffect(() => {
+        dispatch(getUserSubscription());
+    }, [dispatch]);
 
-  useEffect(() => {
-      setUserSubscription(subscription?.userSubscription);
-  }, [subscription]);
+    useEffect(() => {
+        setUserSubscription(subscription?.userSubscription);
+    }, [subscription]);
 
-  return (
-    <div className='p-10'>
-      <h1 className='text-5xl font-semibold py-5 pb-16 text-center'>Pricing</h1>
-      <div className='flex flex-col lg:flex-row justify-center items-center gap-9'>
-        <SubscriptionCard data={{
-          planName: "Free",
-          features: freePlan,
-          planType: "FREE",
-          price: 0,
-          buttonName: userSubscription?.planType === "FREE" ? "Current Plan" : "Get Started"
-        }} />
-        
-        <SubscriptionCard data={{
-          planName: "Monthly Paid Plan",
-          features: paidPlan,
-          planType: "MONTHLY",
-          price: 799,
-          buttonName: userSubscription?.planType === "MONTHLY" ? "Current Plan" : "Get Started"
-        }} />
-        
-        <SubscriptionCard data={{
-          planName: "Annual Paid Plan",
-          features: annualPlan,
-          planType: "ANNUALLY",
-          price: 6711,
-          buttonName: userSubscription?.planType === "ANNUALLY" ? "Current Plan" : "Get Started"
-        }} />
-      </div>
-    </div>
-  );
+    return (
+        <div className='py-12 px-6 max-w-6xl mx-auto animate-fade-in'>
+            <div className='text-center mb-12'>
+                <h1 className='text-4xl font-bold gradient-text mb-3'>Choose Your Plan</h1>
+                <p className='text-muted-foreground text-sm max-w-md mx-auto'>
+                    Unlock powerful features to boost your team's productivity and project delivery
+                </p>
+            </div>
+            <div className='flex flex-col lg:flex-row justify-center items-stretch gap-6'>
+                <SubscriptionCard data={{
+                    planName: "Free",
+                    features: freePlan,
+                    planType: "FREE",
+                    price: 0,
+                    buttonName: userSubscription?.planType === "FREE" ? "Current Plan" : "Get Started"
+                }} />
+
+                <SubscriptionCard data={{
+                    planName: "Monthly Pro",
+                    features: paidPlan,
+                    planType: "MONTHLY",
+                    price: 799,
+                    buttonName: userSubscription?.planType === "MONTHLY" ? "Current Plan" : "Get Started",
+                    popular: true
+                }} />
+
+                <SubscriptionCard data={{
+                    planName: "Annual Pro",
+                    features: annualPlan,
+                    planType: "ANNUALLY",
+                    price: 6711,
+                    buttonName: userSubscription?.planType === "ANNUALLY" ? "Current Plan" : "Get Started"
+                }} />
+            </div>
+        </div>
+    );
 }
 
 export default Subscription;

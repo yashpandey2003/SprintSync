@@ -5,27 +5,24 @@ import com.yash.project_management.model.Project;
 import com.yash.project_management.model.User;
 import com.yash.project_management.repository.IssueRepository;
 import com.yash.project_management.request.IssueRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IssueServiceImpl implements IssueService{
+@RequiredArgsConstructor
+public class IssueServiceImpl implements IssueService {
 
-    @Autowired
-    private IssueRepository issueRepository;
-    @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private UserService userService;
-
+    private final IssueRepository issueRepository;
+    private final ProjectService projectService;
+    private final UserService userService;
 
     @Override
     public Issue getIssueById(Long issueId) throws Exception {
         Optional<Issue> issue = issueRepository.findById(issueId);
-        if(issue.isPresent()){
+        if (issue.isPresent()) {
             return issue.get();
         }
         throw new Exception("No issues found with issueid " + issueId);
@@ -48,7 +45,6 @@ public class IssueServiceImpl implements IssueService{
         issue.setDueDate(issueRequest.getDueDate());
         issue.setProject(project);
         return issueRepository.save(issue);
-
     }
 
     @Override

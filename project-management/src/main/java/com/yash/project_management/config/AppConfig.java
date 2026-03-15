@@ -42,7 +42,8 @@ public class AppConfig {
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(Arrays.asList(
                         "http://localhost:5173/",
-                        "http://localhost:3000"
+                        "http://localhost:3000",
+                        "https://sprintsync-ui.netlify.app/"
                 ));
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);

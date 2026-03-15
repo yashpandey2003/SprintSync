@@ -1,13 +1,12 @@
-package com.yash.project_management.reponse;
+package com.yash.project_management.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String jwt;
+@NoArgsConstructor
+public class MessageResponse {
     private String message;
 }

@@ -21,7 +21,6 @@ function App() {
     dispatch(getUser())
     dispatch(fetchProject({}))
   }, [auth.jwt])
-  console.log(auth.user);
   return (
     <>
     {auth.user?

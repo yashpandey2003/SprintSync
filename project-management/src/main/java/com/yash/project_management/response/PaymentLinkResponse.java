@@ -1,4 +1,4 @@
-package com.yash.project_management.reponse;
+package com.yash.project_management.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
