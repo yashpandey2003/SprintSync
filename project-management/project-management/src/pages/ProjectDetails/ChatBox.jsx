@@ -8,8 +8,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchChatByProject, fetchChatMessages, sendMessage, receiveMessage } from '@/Redux/Chat/Action.js'
 import { useParams } from 'react-router-dom'
 import SockJS from 'sockjs-client'
+import { Stomp } from '@stomp/stompjs'
 import { Client } from '@stomp/stompjs'
 import { useRef } from 'react'
+import { API_BASE_URL } from '@/config/api'
+
+const getWebSocketUrl = () => {
+    if (API_BASE_URL.startsWith('https://')) {
+        return API_BASE_URL.replace('https://', 'wss://') + '/ws';
+    }
+    return API_BASE_URL.replace('http://', 'ws://') + '/ws';
+};
 
 const ChatBox = () => {
     const [message, setMessage] = useState("");
@@ -32,7 +41,7 @@ const ChatBox = () => {
     // WebSocket Connection
     useEffect(() => {
         const client = new Client({
-            brokerURL: 'ws://localhost:8081/ws',
+            brokerURL: getWebSocketUrl(),
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log('Connected to WebSocket');

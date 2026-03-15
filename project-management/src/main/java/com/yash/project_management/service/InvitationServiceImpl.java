@@ -3,6 +3,7 @@ package com.yash.project_management.service;
 import com.yash.project_management.model.Invitation;
 import com.yash.project_management.repository.InvitationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,6 +15,9 @@ public class InvitationServiceImpl implements InvitationService {
     private final InvitationRepository invitationRepository;
     private final EmailService emailService;
 
+    @Value("${frontend.url:http://localhost:5173}")
+    private String frontendUrl;
+
     @Override
     public void sendInvitation(String email, Long projectId) throws Exception {
         String invitationToken = UUID.randomUUID().toString();
@@ -22,7 +26,7 @@ public class InvitationServiceImpl implements InvitationService {
         invitation.setProjectId(projectId);
         invitation.setToken(invitationToken);
         invitationRepository.save(invitation);
-        String invitationLink = "http://localhost:5173/accept_invitation?token=" + invitationToken;
+        String invitationLink = frontendUrl + "/accept_invitation?token=" + invitationToken;
         emailService.sendEmailWithToken(email, invitationLink);
     }
 
